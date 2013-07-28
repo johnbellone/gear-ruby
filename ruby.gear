@@ -16,4 +16,11 @@ Chaindrive::Gear.new do |gear|
     }
     chef.run_list = ['recipe[ruby_build]', 'recipe[rbenv::system]'] 
   end
+
+  gear.provisioner :shell do |shell|
+    shell.environment ['RBENV_PATH', 'RBENV_VERSION']
+    shell.run file: 'scripts/rbenv.sh', sudo: true
+    shell.run file: 'scripts/ruby_build.sh', sudo: true
+    shell.run "rbenv install $RBENV_VERSION"
+  end
 end
