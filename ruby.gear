@@ -1,0 +1,19 @@
+Chaindrive::Gear.new do |gear|
+  gear.name             = 'ruby'
+  gear.version          = '0.0.1'
+  gear.license          = 'MIT'
+
+  gear.description      = 'Install the Ruby language using Chef.'
+  gear.long_description = IO.read(File.dirname(__FILE__), 'README.md')
+
+  gear.maintainers      = {name: 'John Bellone', email: 'john.bellone.jr@gmail.com'}
+  gear.homepage         = 'https://github.com/johnbellone/gear-ruby'
+
+  gear.provisioner :chef do |chef|
+    chef.cookbooks = {
+      rbenv: {github: 'fnichol/chef-rbenv'},
+      ruby_build: {github: 'fnichol/chef-ruby_build'}
+    }
+    chef.run_list = ['recipe[ruby_build]', 'recipe[rbenv::system]'] 
+  end
+end
